@@ -53,7 +53,7 @@ public class SpyToolkit
 
     public static bool PowerCheck(List<SpyGadget> gadgets, int minPower)
     {
-        if (gadgets.Where(s => s.PowerLevel >= minPower).Count() == gadgets.Count())
+        if (gadgets.All(s => s.PowerLevel >= minPower))
         {
             return true;
         }
