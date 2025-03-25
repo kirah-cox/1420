@@ -73,5 +73,7 @@ public class SpyToolkit
         bool missionReady = activeGadgets.Any() && PowerCheck(activeGadgets, requiredPower);
 
         string determineIfReady = missionReady ? $"Mission {missionName}: Ready." : $"Mission {missionName}: Insufficient power.";
+
+        Console.WriteLine(determineIfReady);
     }
 }
