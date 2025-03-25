@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-namespace _1420
+namespace DemoSolution
 {
     public class SpyGadget
     {

@@ -1,4 +1,4 @@
-﻿using _1420;
+﻿using DemoSolution;
 
 
 class Program

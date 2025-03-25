@@ -1,93 +1,91 @@
-﻿using System;
+﻿using DemoSolution;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
-namespace _1420
+class SpyToolkit
 {
-    class SpyToolkit
+    List<SpyGadget> SpyGadgets { get; set; } = new List<SpyGadget>();
+
+    public SpyToolkit() { }
+
+    public void AddGadget(string name, string category, int powerLevel = 50, bool isActive = true)
     {
-        List<SpyGadget> SpyGadgets { get; set; } = new List<SpyGadget>();
+        SpyGadget spyGadget = new SpyGadget();
+        spyGadget.Name = name;
+        spyGadget.Category = category;
+        spyGadget.PowerLevel = powerLevel;
+        spyGadget.IsActive = isActive;
 
-        public SpyToolkit() { }
 
-        public void AddGadget(string name, string category, int powerLevel = 50, bool isActive = true)
+        bool containsGadget = SpyGadgets.Any(s => s.Name == name);
+
+        if (containsGadget)
         {
-            SpyGadget spyGadget = new SpyGadget();
-            spyGadget.Name = name;
-            spyGadget.Category = category;
-            spyGadget.PowerLevel = powerLevel;
-            spyGadget.IsActive = isActive;
-
-
-            bool containsGadget = SpyGadgets.Any(s => s.Name == name);
-
-            if (containsGadget)
-            {
-                Console.WriteLine($"{name} already exists.");
-                return;
-            }
-
-            SpyGadgets.Add(spyGadget);
-            Console.WriteLine($"{name} added to toolkit.");
+            Console.WriteLine($"{name} already exists.");
+            return;
         }
 
-        public List<SpyGadget> GetActiveGadgets(string category = null)
-        {
-            if(category != null)
-            {
-                List<SpyGadget> activeCategoryGadgets = SpyGadgets.Where(s => s.IsActive == true).Where(s => s.Category == category).ToList();
-                return activeCategoryGadgets;
-            }
+        SpyGadgets.Add(spyGadget);
+        Console.WriteLine($"{name} added to toolkit.");
+    }
 
-            List<SpyGadget> activeGadgets = SpyGadgets.Where(s => s.IsActive == true).ToList();
-            return activeGadgets;
+    public List<SpyGadget> GetActiveGadgets(string category = null)
+    {
+        if (category != null)
+        {
+            List<SpyGadget> activeCategoryGadgets = SpyGadgets.Where(s => s.IsActive == true).Where(s => s.Category == category).ToList();
+            return activeCategoryGadgets;
         }
 
-        public void DeactivateGadget(string name)
+        List<SpyGadget> activeGadgets = SpyGadgets.Where(s => s.IsActive == true).ToList();
+        return activeGadgets;
+    }
+
+    public void DeactivateGadget(string name)
+    {
+        SpyGadget containsGadget = SpyGadgets.Where(s => s.Name == name).FirstOrDefault();
+
+        if (containsGadget != null)
         {
-            SpyGadget containsGadget = SpyGadgets.Where(s => s.Name == name).FirstOrDefault();
-
-            if (containsGadget != null)
-            {
-                containsGadget.IsActive = false;
-            }
-
-            Console.WriteLine(containsGadget != null ? $"{name} deactivated." : $"{name} not found.");
+            containsGadget.IsActive = false;
         }
 
-        public static bool PowerCheck(List<SpyGadget> gadgets, int minPower)
-        {
-            if (gadgets.Where(s => s.PowerLevel >= minPower).Count() == gadgets.Count())
-            {
-                return true;
-            }
-            else if (gadgets == null)
-            {
-                return true;
-            }
+        Console.WriteLine(containsGadget != null ? $"{name} deactivated." : $"{name} not found.");
+    }
 
-            return false;
+    public static bool PowerCheck(List<SpyGadget> gadgets, int minPower)
+    {
+        if (gadgets.Where(s => s.PowerLevel >= minPower).Count() == gadgets.Count())
+        {
+            return true;
+        }
+        else if (gadgets == null)
+        {
+            return true;
         }
 
-        public void DebugMission(string missionName, int requiredPower)
+        return false;
+    }
+
+    public void DebugMission(string missionName, int requiredPower)
+    {
+        List<SpyGadget> activeGadgets = GetActiveGadgets();
+        if (activeGadgets.Count() == 0)
         {
-            List<SpyGadget> activeGadgets = GetActiveGadgets();
-            if (activeGadgets.Count() == 0)
-            {
-                Console.WriteLine($"Mission {missionName}: No active gadgets available.");
-                return;
-            }
-
-            if (activeGadgets.Where(s => s.PowerLevel >= requiredPower).Count() == 0)
-            {
-                Console.WriteLine($"Mission {missionName}: Insufficient power level.");
-                return;
-            }
-
-            Console.WriteLine($"Mission {missionName}: Ready.");
+            Console.WriteLine($"Mission {missionName}: No active gadgets available.");
+            return;
         }
+
+        if (activeGadgets.Where(s => s.PowerLevel >= requiredPower).Count() == 0)
+        {
+            Console.WriteLine($"Mission {missionName}: Insufficient power level.");
+            return;
+        }
+
+        Console.WriteLine($"Mission {missionName}: Ready.");
     }
 }
