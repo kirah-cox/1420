@@ -69,18 +69,9 @@ public class SpyToolkit
     public void DebugMission(string missionName, int requiredPower)
     {
         List<SpyGadget> activeGadgets = GetActiveGadgets();
-        if (activeGadgets.Count() == 0)
-        {
-            Console.WriteLine($"Mission {missionName}: No active gadgets available.");
-            return;
-        }
 
-        if (activeGadgets.Where(s => s.PowerLevel >= requiredPower).Count() == 0)
-        {
-            Console.WriteLine($"Mission {missionName}: Insufficient power level.");
-            return;
-        }
+        bool missionReady = activeGadgets.Any() && PowerCheck(activeGadgets, requiredPower);
 
-        Console.WriteLine($"Mission {missionName}: Ready.");
+        string determineIfReady = missionReady ? $"Mission {missionName}: Ready." : $"Mission {missionName}: Insufficient power.";
     }
 }
