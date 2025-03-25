@@ -53,12 +53,34 @@ public class SpyToolkit
 
     public static bool PowerCheck(List<SpyGadget> gadgets, int minPower)
     {
+        if (gadgets.Where(s => s.PowerLevel >= minPower).Count() == gadgets.Count())
+        {
+            return true;
+        }
+        else if (gadgets == null)
+        {
+            return true;
+        }
+
         return false;
     }
 
 
     public void DebugMission(string missionName, int requiredPower)
     {
+        List<SpyGadget> activeGadgets = GetActiveGadgets();
+        if (activeGadgets.Count() == 0)
+        {
+            Console.WriteLine($"Mission {missionName}: No active gadgets available.");
+            return;
+        }
 
+        if (activeGadgets.Where(s => s.PowerLevel >= requiredPower).Count() == 0)
+        {
+            Console.WriteLine($"Mission {missionName}: Insufficient power level.");
+            return;
+        }
+
+        Console.WriteLine($"Mission {missionName}: Ready.");
     }
 }
