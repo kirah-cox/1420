@@ -29,8 +29,14 @@ public class SpyToolkit
 
     public List<SpyGadget> GetActiveGadgets(string category = null)
     {
-        return new List<SpyGadget>();
+        if (category != null)
+        {
+            List<SpyGadget> activeCategoryGadgets = gadgets.Where(s => s.IsActive == true).Where(s => s.Category == category).ToList();
+            return activeCategoryGadgets;
+        }
 
+        List<SpyGadget> activeGadgets = gadgets.Where(s => s.IsActive == true).ToList();
+        return activeGadgets;
     }
 
     public void DeactivateGadget(string name)
