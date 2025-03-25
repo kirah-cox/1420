@@ -48,17 +48,46 @@ namespace _1420
 
         public void DeactivateGadget(string name)
         {
-            bool containsGadget = SpyGadgets.Any(s => s.Name == name);
+            SpyGadget containsGadget = SpyGadgets.Where(s => s.Name == name).FirstOrDefault();
 
-            SpyGadget spyGadget = new SpyGadget();
-            spyGadget.Name = name;
-            spyGadget.IsActive = false;
+            if (containsGadget != null)
+            {
+                containsGadget.IsActive = false;
+            }
 
-            var deactivate = containsGadget ? $"{name} deactivated." : $"{name} not found.";
+            Console.WriteLine(containsGadget != null ? $"{name} deactivated." : $"{name} not found.");
+        }
 
-            Console.WriteLine(deactivate);
+        public static bool PowerCheck(List<SpyGadget> gadgets, int minPower)
+        {
+            if (gadgets.Where(s => s.PowerLevel >= minPower).Count() == gadgets.Count())
+            {
+                return true;
+            }
+            else if (gadgets == null)
+            {
+                return true;
+            }
 
-            //still need to fix this
+            return false;
+        }
+
+        public void DebugMission(string missionName, int requiredPower)
+        {
+            List<SpyGadget> activeGadgets = GetActiveGadgets();
+            if (activeGadgets.Count() == 0)
+            {
+                Console.WriteLine($"Mission {missionName}: No active gadgets available.");
+                return;
+            }
+
+            if (activeGadgets.Where(s => s.PowerLevel >= requiredPower).Count() == 0)
+            {
+                Console.WriteLine($"Mission {missionName}: Insufficient power level.");
+                return;
+            }
+
+            Console.WriteLine($"Mission {missionName}: Ready.");
         }
     }
 }
