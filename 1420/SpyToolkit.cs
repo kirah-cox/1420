@@ -68,7 +68,7 @@ public class SpyToolkit
 
     public void DebugMission(string missionName, int requiredPower)
     {
-        List<SpyGadget> activeGadgets = GetActiveGadgets();
+        var activeGadgets = GetActiveGadgets();
 
         bool missionReady = activeGadgets.Any() && PowerCheck(activeGadgets, requiredPower);
 
