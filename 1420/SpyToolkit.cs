@@ -41,7 +41,14 @@ public class SpyToolkit
 
     public void DeactivateGadget(string name)
     {
+        SpyGadget containsGadget = gadgets.Where(s => s.Name == name).FirstOrDefault();
 
+        if (containsGadget != null)
+        {
+            containsGadget.IsActive = false;
+        }
+
+        Console.WriteLine(containsGadget != null ? $"{name} deactivated." : $"{name} not found.");
     }
 
     public static bool PowerCheck(List<SpyGadget> gadgets, int minPower)
